@@ -7,8 +7,6 @@ const Dotenv = require("dotenv-webpack");
 
 const deps = require("./package.json").dependencies;
 
-const printCompilationMessage = require("./compilation.config.js");
-
 module.exports = (_, argv) => ({
   output: {
     publicPath: "http://localhost:4000/",
@@ -20,30 +18,13 @@ module.exports = (_, argv) => ({
 
   devServer: {
     port: 4000,
-    // historyApiFallback: true,
-    // watchFiles: [path.resolve(__dirname, "src")],
-    // onListening: function (devServer) {
-    //   const port = devServer.server.address().port;
 
-    //   printCompilationMessage("compiling", port);
-
-    //   devServer.compiler.hooks.done.tap("OutputMessagePlugin", (stats) => {
-    //     setImmediate(() => {
-    //       if (stats.hasErrors()) {
-    //         printCompilationMessage("failure", port);
-    //       } else {
-    //         printCompilationMessage("success", port);
-    //       }
-    //     });
-    //   });
-    // },
-
-    // headers: {
-    //   "Access-Control-Allow-Origin": "*",
-    //   "Access-Control-Allow-Methods": "*",
-    //   "Access-Control-Allow-Headers": "*",
-    //   "Sec-Fetch-Site": "cross-origin",
-    // },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Sec-Fetch-Site": "cross-origin",
+    },
   },
 
   module: {
@@ -73,9 +54,8 @@ module.exports = (_, argv) => ({
     new ModuleFederationPlugin({
       name: "mfe_1",
       filename: "remoteEntry.js",
-      // remotes: {},
       exposes: {
-        "./button": "./src/button",
+        "./button": "./src/button.tsx",
       },
       shared: {
         react: {

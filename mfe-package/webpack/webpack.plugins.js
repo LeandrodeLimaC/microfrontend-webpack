@@ -1,3 +1,10 @@
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const {
+  ModuleFederationPlugin,
+} = require("@module-federation/enhanced/webpack");
+
+const { name, exposes, shared, dependencies } = require("./constants");
+
 exports.plugins = [
   new ModuleFederationPlugin({
     name,

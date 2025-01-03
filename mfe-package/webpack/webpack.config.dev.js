@@ -1,21 +1,12 @@
-const HtmlWebPackPlugin = require("html-webpack-plugin");
-const {
-  ModuleFederationPlugin,
-} = require("@module-federation/enhanced/webpack");
 const path = require("path");
 const webpack = require("webpack");
-const webpackDevServer = require("webpack-dev-server"); // Import the correct package
+const webpackDevServer = require("webpack-dev-server");
+
+const { plugins } = require("./webpack.plugins");
+
+const { port, publicPath } = require("./constants");
 
 const currentDir = path.resolve(process.cwd());
-
-const {
-  name,
-  port,
-  publicPath,
-  exposes,
-  shared,
-  dependencies,
-} = require("./constants");
 
 const config = {
   mode: "development",
@@ -67,30 +58,7 @@ const config = {
     ],
   },
 
-  plugins: [
-    new ModuleFederationPlugin({
-      name,
-      filename: "remoteEntry.js",
-      exposes,
-      shared: {
-        ...shared,
-        react: {
-          eager: true,
-          singleton: true,
-          requiredVersion: dependencies["react"].version,
-        },
-        "react-dom": {
-          eager: true,
-          singleton: true,
-          requiredVersion: dependencies["react-dom"].version,
-        },
-        microfrontend: { singleton: true },
-      },
-    }),
-    new HtmlWebPackPlugin({
-      template: "./src/index.html",
-    }),
-  ],
+  plugins,
 };
 
 const startDevServer = () => {
